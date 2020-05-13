@@ -37,9 +37,9 @@
             this.btnPlay = new System.Windows.Forms.Button();
             this.pnlGameBoard = new System.Windows.Forms.Panel();
             this.pnlWinGame = new System.Windows.Forms.Panel();
+            this.lblWinGame = new System.Windows.Forms.Label();
             this.pnlLoseGame = new System.Windows.Forms.Panel();
             this.lblLoseGame = new System.Windows.Forms.Label();
-            this.lblWinGame = new System.Windows.Forms.Label();
             this.pnlWelcome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.pnlWinGame.SuspendLayout();
@@ -127,6 +127,16 @@
             this.pnlWinGame.Size = new System.Drawing.Size(800, 450);
             this.pnlWinGame.TabIndex = 3;
             // 
+            // lblWinGame
+            // 
+            this.lblWinGame.AutoSize = true;
+            this.lblWinGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWinGame.Location = new System.Drawing.Point(129, 189);
+            this.lblWinGame.Name = "lblWinGame";
+            this.lblWinGame.Size = new System.Drawing.Size(543, 73);
+            this.lblWinGame.TabIndex = 1;
+            this.lblWinGame.Text = "Vous avez Gagne";
+            // 
             // pnlLoseGame
             // 
             this.pnlLoseGame.BackColor = System.Drawing.Color.Transparent;
@@ -147,15 +157,6 @@
             this.lblLoseGame.TabIndex = 0;
             this.lblLoseGame.Text = "VOUS AVEZ PERDU";
             // 
-            // lblWinGame
-            // 
-            this.lblWinGame.AutoSize = true;
-            this.lblWinGame.Location = new System.Drawing.Point(396, 115);
-            this.lblWinGame.Name = "lblWinGame";
-            this.lblWinGame.Size = new System.Drawing.Size(92, 13);
-            this.lblWinGame.TabIndex = 1;
-            this.lblWinGame.Text = "Vous avez Gagne";
-            // 
             // Game
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -164,10 +165,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.pnlLoseGame);
-            this.Controls.Add(this.pnlWinGame);
             this.Controls.Add(this.pnlGameBoard);
             this.Controls.Add(this.pnlWelcome);
+            this.Controls.Add(this.pnlWinGame);
+            this.Controls.Add(this.pnlLoseGame);
             this.Name = "Game";
             this.Text = "SlamMatch";
             this.Load += new System.EventHandler(this.Game_Load);
