@@ -25,7 +25,7 @@ namespace SlamMatch
             this.currentRound = new Round(this.numCards);
         }
 
-        public Round getCurretRound()
+        public Round getCurrentRound()
         {
             return this.currentRound;
         }
@@ -34,5 +34,11 @@ namespace SlamMatch
         {
             return this.numCards;
         }
+
+        public int GetNumPointsRequiredToPass()
+        {
+            return this.numPointsRequiredToPass;
+        }
+
     }
 }

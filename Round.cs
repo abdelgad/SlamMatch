@@ -24,16 +24,18 @@ namespace SlamMatch
             Yellow
         }
 
-        Random randomizer;
-        int numCards;
-        List<Card> cards;
-        
+        private Random randomizer;
+        private int numCards;
+        private int numCardsValidated;
+        private List<Card> cards;
+
         //TODO: Timer to be Added here 
 
         public Round(int numCard)
         {
             this.randomizer = new Random();
             this.numCards = numCard;
+            this.numCardsValidated = 0;
             this.cards = generatePairsOfCards(this.numCards);
         }
 
@@ -46,7 +48,7 @@ namespace SlamMatch
 
             for (int i = 0; i < numCardsToBeGenerated; i += 2)
             {
-                tempCardSymbol= (CardSymbol)randomizer.Next(Enum.GetNames(typeof(CardSymbol)).Length);
+                tempCardSymbol = (CardSymbol)randomizer.Next(Enum.GetNames(typeof(CardSymbol)).Length);
                 tempCardColor = (CardColor)randomizer.Next(Enum.GetNames(typeof(CardColor)).Length);
                 generatedPairs.Add(new Card(tempCardSymbol, tempCardColor));
                 generatedPairs.Add(new Card(tempCardSymbol, tempCardColor));
@@ -54,9 +56,16 @@ namespace SlamMatch
             return generatedPairs;
         }
 
+        public void PairOfCardsValidated()
+        {
+            this.numCardsValidated += 2;
+        }
+
         public List<Card> getCards()
         {
             return this.cards;
         }
+
+         
     }
 }

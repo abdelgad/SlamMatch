@@ -19,5 +19,20 @@ namespace SlamMatch
             this.numPoints = 0;
             this.numLives = 3;
         }
+
+        public void IncrementNumPoints(int num)
+        {
+            this.numPoints += num;
+        }
+
+        public int GetNumPoints()
+        {
+            return this.numPoints;
+        }
+
+        public int GetNumLives()
+        {
+            return this.numLives;
+        }
     }
 }

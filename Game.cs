@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,15 +14,20 @@ namespace SlamMatch
 {
     public partial class Game : Form
     {
-        Player player;
-        Level[] levels;
-        int currentLevel;
+        private const int numPointsPerPairValidation = 10;
+        private const int maximumLevel = 3;
+        
+        private const int PictureBoxWidth = 100;
+        private const int PictureBoxHeight = 150;
+
+        private Player player;
+        private Level[] levels;
+        private int currentLevel;
 
         //Visual Attributes
-        Random randomizer;
+        private Random randomizer;
         private PictureBox[] pics;
-        private const int CardWidth = 100;
-        private const int CardHeight = 150;
+        private PictureBox firstSelect;
 
 
         public Game()
@@ -30,15 +37,11 @@ namespace SlamMatch
 
         private void Game_Load(object sender, EventArgs e)
         {
-            levels = new Level[3];
+            levels = new Level[maximumLevel];
             this.currentLevel = 0;
             pnlWelcome.BringToFront();
         }
 
-        private void LevelLoad(int levelNum)
-        {
-            this.levels[levelNum] = new Level(8, 8 / 2 * 10);
-        }
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
@@ -54,9 +57,12 @@ namespace SlamMatch
             else
             {
                 this.player = new Player(txtNickname.Text);
-                LevelLoad(this.currentLevel);
-                LoadPictureBoxes(this.levels[currentLevel].getCurretRound().getCards());
+                this.levels[this.currentLevel] = new Level(8, 8 / 2 * numPointsPerPairValidation);
+                LoadPictureBoxes(this.levels[currentLevel].getCurrentRound().getCards());
                 ArrangePictureBoxes();
+                lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
+                lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.levels[this.currentLevel].GetNumPointsRequiredToPass();
+                lblLevel.Text = "Niveau: " + this.currentLevel + " / " + maximumLevel;
                 pnlGameBoard.BringToFront();
             }
         }
@@ -78,13 +84,13 @@ namespace SlamMatch
         {
             // New PictureBox
             PictureBox pic = new PictureBox();
-            pic.Size = new Size(CardWidth, CardHeight);
+            pic.Size = new Size(PictureBoxWidth, PictureBoxHeight);
             pic.SizeMode = PictureBoxSizeMode.StretchImage;
             pic.Parent = pnlGameBoard;
-            pic.MouseClick += card_MouseClick;
+            pic.MouseClick += Card_MouseClick;
 
             pic.Tag = card;
-            pic.Padding = new Padding(5);
+            pic.Padding = new Padding(7);
             pic.BackColor = Color.FromName(card.GetColor().ToString());
             pic.Image = (Image)Properties.Resources.ResourceManager.GetObject(card.GetSymbol().ToString());
 
@@ -97,8 +103,8 @@ namespace SlamMatch
             // Display the deck.
             const int margin = 10;
             int numCardsPerLine = 4;
-            int y = (int)(pics[0].Parent.Height - CardHeight * (Math.Ceiling(numCards / (double)numCardsPerLine))) / 2;
-            int x = (pics[0].Parent.Width - CardWidth * numCardsPerLine) / 2;
+            int y = (int)(pics[0].Parent.Height - PictureBoxHeight * (Math.Ceiling(numCards / (double)numCardsPerLine))) / 2;
+            int x = (pics[0].Parent.Width - PictureBoxWidth * numCardsPerLine) / 2;
             for (int i = 0; i < numCards; i++)
             {
                 pics[i].Location = new Point(x, y);
@@ -106,15 +112,50 @@ namespace SlamMatch
 
                 if ((i + 1) % numCardsPerLine == 0)
                 {
-                    x = (pics[0].Parent.Width - CardWidth * numCardsPerLine) / 2;
+                    x = (pics[0].Parent.Width - PictureBoxWidth * numCardsPerLine) / 2;
                     y += pics[0].Height + margin;
                 }
             }
         }
-
-        private void Card_MouseClick()
+        
+        private void Card_MouseClick(object sender, EventArgs e)
         {
+            
+            PictureBox cardSelected = sender as PictureBox;
+            Card card = cardSelected.Tag as Card;
+            if (card.GetState() == Card.CardState.Selectable)
+            {
+                if (this.firstSelect == null)
+                {
+                    cardSelected.BorderStyle = BorderStyle.Fixed3D;
+                    this.firstSelect = cardSelected;
+                    ((Card)this.firstSelect.Tag).SetState(Card.CardState.Selected);
+                }
+                else if(cardSelected != firstSelect && ((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag))
+                {
+                    ValidatePictureBox(firstSelect);
+                    ValidatePictureBox(cardSelected);
+                    this.levels[this.currentLevel].getCurrentRound().PairOfCardsValidated();
+                    this.player.IncrementNumPoints(numPointsPerPairValidation);
+                    lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.levels[this.currentLevel].GetNumPointsRequiredToPass();
+                    this.firstSelect = null;
+                }
+                else if (cardSelected != firstSelect && !((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag))
+                {
+                    //Animation
+                    ((Card)firstSelect.Tag).SetState(Card.CardState.Selectable);
+                    this.firstSelect.BorderStyle = BorderStyle.None;
+                    this.firstSelect = null;
+                }
+            }
+        }
 
+        private void ValidatePictureBox(PictureBox pic)
+        {
+            pic.BorderStyle = BorderStyle.None;
+            pic.BackColor = Color.FromName("White");
+            pic.Image = Properties.Resources.Validated;
+            ((Card)pic.Tag).SetState(Card.CardState.Validated);
         }
     }
 }

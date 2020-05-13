@@ -10,14 +10,22 @@ namespace SlamMatch
 {
     class Card
     {
+        public enum CardState
+        {
+            Selectable,
+            Selected,
+            Validated
+        }
 
         private CardSymbol symbol;
         private CardColor color;
+        private CardState state;
 
         public Card(CardSymbol symbol, CardColor color)
         {
             this.symbol = symbol;
             this.color = color;
+            this.state = 0;
         }
 
         public override bool Equals(Object obj)
@@ -42,6 +50,16 @@ namespace SlamMatch
         public CardColor GetColor()
         {
             return this.color;
+        }
+
+        public CardState GetState()
+        {
+            return this.state;
+        }
+
+        public void SetState(CardState newState)
+        {
+            this.state = newState;
         }
     }
 }
