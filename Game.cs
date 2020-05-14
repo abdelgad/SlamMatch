@@ -1,24 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlamMatch
 {
     class Game
     {
-        public enum LevelNumCard
+        public enum LevelNumCards
         {
             Level1 = 8,
             Level2 = 10,
             Level3 = 12
         }
 
-        private const int numPointsPerPairValidation = 10;
+        public enum LevelNumPoints
+        {
+            Level1 = 80,
+            Level2 = 180,
+            Level3 = 320
+        }
+
         private const int maximumLevel = 3;
-
-
+        private const int numPointsPerPairValidation = 10;
+        
         private Level[] levels;
         private int currentLevel;
 
@@ -26,16 +28,23 @@ namespace SlamMatch
         {
             this.currentLevel = 0;
             this.levels = new Level[maximumLevel];
-            int numCards = (int)(Enum.GetValues(typeof(LevelNumCard))).GetValue(this.currentLevel);
-            int numPointsRequiredToPass = numCards / 2 * numPointsPerPairValidation;
-
+            int numCards = (int)(Enum.GetValues(typeof(LevelNumCards))).GetValue(this.currentLevel);
+            int numPointsRequiredToPass = (int)(Enum.GetValues(typeof(LevelNumPoints))).GetValue(this.currentLevel);
+            this.levels[this.currentLevel] = new Level(numCards, numPointsRequiredToPass);
         }
 
-        public void StartGame()
+        public bool NextLevel()
         {
-            
-            
-            
+            bool hasNextLevel = false;
+            if(currentLevel < maximumLevel)
+            {
+                hasNextLevel = true;
+                this.currentLevel++;
+                int numCards = (int)(Enum.GetValues(typeof(LevelNumCards))).GetValue(this.currentLevel);
+                int numPoints = (int)(Enum.GetValues(typeof(LevelNumPoints))).GetValue(this.currentLevel);
+                this.levels[currentLevel] = new Level(numCards, numPoints);
+            }
+            return hasNextLevel;
         }
 
         public Level GetCurrentLevel()
@@ -46,16 +55,6 @@ namespace SlamMatch
         public int GetCurrentLevelNum()
         {
             return this.currentLevel;
-        }
-
-        public void NextLevel()
-        {
-            //TODO: Check if finished max level the show winning pannel
-            int numCards = (int)(Enum.GetValues(typeof(LevelNumCard))).GetValue(this.currentLevel+1);
-            int numPoints = this.levels[this.currentLevel].GetNumPointsRequiredToPass() + numCards / 2 * numPointsPerPairValidation;
-            
-            this.currentLevel++;
-            this.levels[currentLevel] = new Level(numCards, numPoints);
         }
 
         public int GetMaximumLevel()

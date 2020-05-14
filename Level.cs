@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace SlamMatch
 {
     class Level
     {
         private int numCards;
-        private Round currentRound;
         private int numPointsRequiredToPass;
-        
+        private Round currentRound;
 
         public Level(int numCards, int numPointsRequiredToPass)
         {

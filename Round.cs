@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SlamMatch
 {
@@ -21,7 +18,10 @@ namespace SlamMatch
             Red,
             Blue,
             Green,
-            Yellow
+            Yellow,
+            Orange,
+            Pink,
+            Purple
         }
 
         private Random randomizer;
@@ -36,24 +36,37 @@ namespace SlamMatch
             this.randomizer = new Random();
             this.numCards = numCard;
             this.numCardsValidated = 0;
-            this.cards = generatePairsOfCards(this.numCards);
+            GeneratePairsOfCards();
+            ShuffleCards();
         }
 
-
-        private List<Card> generatePairsOfCards(int numCardsToBeGenerated)
+        private void GeneratePairsOfCards()
         {
-            List<Card> generatedPairs = new List<Card>();
             CardSymbol tempCardSymbol;
             CardColor tempCardColor;
 
-            for (int i = 0; i < numCardsToBeGenerated; i += 2)
+            this.cards = new List<Card>();
+
+            for (int i = 0; i < this.numCards; i += 2)
             {
                 tempCardSymbol = (CardSymbol)randomizer.Next(Enum.GetNames(typeof(CardSymbol)).Length);
                 tempCardColor = (CardColor)randomizer.Next(Enum.GetNames(typeof(CardColor)).Length);
-                generatedPairs.Add(new Card(tempCardSymbol, tempCardColor));
-                generatedPairs.Add(new Card(tempCardSymbol, tempCardColor));
+                this.cards.Add(new Card(tempCardSymbol, tempCardColor));
+                this.cards.Add(new Card(tempCardSymbol, tempCardColor));
             }
-            return generatedPairs;
+        }
+
+        private void ShuffleCards()
+        {
+            Card card;
+            for (int i = this.cards.Count - 1; i > 1; i--)
+            {
+                int rnd = randomizer.Next(i + 1);
+
+                card = cards[rnd];
+                this.cards[rnd] = this.cards[i];
+                this.cards[i] = card;
+            }
         }
 
         public void PairOfCardsValidated()

@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.Remoting.Channels;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace SlamMatch
@@ -21,7 +15,6 @@ namespace SlamMatch
         private const int PictureBoxHeight = 150;
         private PictureBox[] pics;
         private PictureBox firstSelect;
-        private Random randomizer;
 
         public GameView(){
             InitializeComponent();
@@ -38,9 +31,8 @@ namespace SlamMatch
             else{
                 this.player = new Player(txtNickname.Text);
                 this.game = new Game();
-                this.game.StartGame();
-                UpdateStats();
                 RefreshGameBoard();
+                UpdateStats();
                 pnlGameBoard.BringToFront();
             }
         }
@@ -56,15 +48,17 @@ namespace SlamMatch
             ArrangePictureBoxes();
         }
 
+        private void UpdateStats()
+        {
+            lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
+            lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.game.GetCurrentLevel().GetNumPointsRequiredToPass();
+            lblLevel.Text = "Niveau: " + this.game.GetCurrentLevelNum() + " / " + this.game.GetMaximumLevel();
+        }
+
         private void LoadPictureBoxes(List<Card> cards){
-            this.randomizer = new Random();
             this.pics = new PictureBox[cards.Count];
-            Console.WriteLine("LOLOLO " + cards.Count);
-            int randomCardIndex;
-            for (int i = 0; i < pics.Length; i++){
-                randomCardIndex = randomizer.Next(cards.Count);
-                pics[i] = LoadCard(cards[randomCardIndex]);
-                cards.RemoveAt(randomCardIndex);
+            for (int i = 0; i < cards.Count; i++){
+                pics[i] = LoadCard(cards[i]);
             }
         }
         
@@ -86,7 +80,7 @@ namespace SlamMatch
         private void ArrangePictureBoxes()
         {
             int numCards = this.game.GetCurrentLevel().GetNumCards();
-            const int margin = 10;
+            int margin = 10;
             int numCardsPerLine = 4;
             int y = (int)(pics[0].Parent.Height - PictureBoxHeight * (Math.Ceiling(numCards / (double)numCardsPerLine))) / 2;
             int x = (pics[0].Parent.Width - PictureBoxWidth * numCardsPerLine) / 2;
@@ -120,14 +114,18 @@ namespace SlamMatch
 
                     if(this.game.GetCurrentLevel().GetCurrentRound().roundFinished()){
                         if (this.player.GetNumPoints() == this.game.GetCurrentLevel().GetNumPointsRequiredToPass())
-                            this.game.NextLevel();
-                        else this.game.GetCurrentLevel().newRound();
+                        {
+                            if (!this.game.NextLevel())
+                                pnlWinGame.BringToFront();
+                        }
+                        else { this.game.GetCurrentLevel().newRound(); } 
+                            
                         RefreshGameBoard();
                     }
                     UpdateStats();
                 }
                 else if (cardSelected != firstSelect && !((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag)){
-                    //Animation
+                    AnimatePictureBox(firstSelect);
                     ((Card)firstSelect.Tag).SetState(Card.CardState.Selectable);
                     this.firstSelect.BorderStyle = BorderStyle.None;
                     this.firstSelect = null;
@@ -135,17 +133,17 @@ namespace SlamMatch
             }
         }
 
-        private void UpdateStats(){
-            lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
-            lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.game.GetCurrentLevel().GetNumPointsRequiredToPass();
-            lblLevel.Text = "Niveau: " + this.game.GetCurrentLevelNum() + " / " + this.game.GetMaximumLevel();
-        }
-
         private void ValidatePictureBox(PictureBox pic){
             pic.BorderStyle = BorderStyle.None;
             pic.BackColor = Color.FromName("White");
             pic.Image = Properties.Resources.Validated;
             ((Card)pic.Tag).SetState(Card.CardState.Validated);
+        }
+
+        private void AnimatePictureBox(PictureBox pic){
+            for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
+            for (int i = 0; i < 10; i++) { pic.Location = new Point(pic.Location.X - 2, pic.Location.Y - 2); Thread.Sleep(10); }
+            for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
         }
     }
 }
