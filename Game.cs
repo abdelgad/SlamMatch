@@ -23,6 +23,7 @@ namespace SlamMatch
         private Player player;
         private Level[] levels;
         private int currentLevel;
+        private int numCards;
 
         //Visual Attributes
         private Random randomizer;
@@ -37,8 +38,6 @@ namespace SlamMatch
 
         private void Game_Load(object sender, EventArgs e)
         {
-            levels = new Level[maximumLevel];
-            this.currentLevel = 0;
             pnlWelcome.BringToFront();
         }
 
@@ -56,24 +55,43 @@ namespace SlamMatch
             }
             else
             {
+                levels = new Level[maximumLevel];
+                this.currentLevel = 0;
+                this.numCards = 8;
                 this.player = new Player(txtNickname.Text);
-                this.levels[this.currentLevel] = new Level(8, 8 / 2 * numPointsPerPairValidation);
-                LoadPictureBoxes(this.levels[currentLevel].getCurrentRound().getCards());
-                ArrangePictureBoxes();
+                this.player.OnPointsChange += UpdateLblPoints; //TODO: do the same thing for the number of lives
+                this.levels[this.currentLevel] = new Level(numCards, numCards / 2 * numPointsPerPairValidation);
+                RefreshGameBoard();
+
                 lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
-                lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.levels[this.currentLevel].GetNumPointsRequiredToPass();
+                lblPoints.Text = "Points: " + this.player.NumPoints + " / " + this.levels[this.currentLevel].GetNumPointsRequiredToPass();
                 lblLevel.Text = "Niveau: " + this.currentLevel + " / " + maximumLevel;
                 pnlGameBoard.BringToFront();
             }
         }
 
+        private void RefreshGameBoard()
+        {
+            if(this.pics != null)
+            {
+                for(int i = 0; i < pics.Length; i++)
+                {
+                    pnlGameBoard.Controls.Remove(pics[i]); 
+                }
+            }
+            
+            LoadPictureBoxes(this.levels[currentLevel].getCurrentRound().GetCards());
+            ArrangePictureBoxes();
+        }
+
         private void LoadPictureBoxes(List<Card> cards)
         {
             this.randomizer = new Random();
-            pics = new PictureBox[8];
+            pics = new PictureBox[numCards];
             int randomCardIndex;
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < numCards; i++)
             {
+                Console.WriteLine("number: " + i);
                 randomCardIndex = randomizer.Next(cards.Count);
                 pics[i] = LoadCard(cards[randomCardIndex]);
                 cards.RemoveAt(randomCardIndex);
@@ -100,7 +118,6 @@ namespace SlamMatch
         private void ArrangePictureBoxes()
         {
             int numCards = this.levels[this.currentLevel].GetNumCards();
-            // Display the deck.
             const int margin = 10;
             int numCardsPerLine = 4;
             int y = (int)(pics[0].Parent.Height - PictureBoxHeight * (Math.Ceiling(numCards / (double)numCardsPerLine))) / 2;
@@ -120,7 +137,6 @@ namespace SlamMatch
         
         private void Card_MouseClick(object sender, EventArgs e)
         {
-            
             PictureBox cardSelected = sender as PictureBox;
             Card card = cardSelected.Tag as Card;
             if (card.GetState() == Card.CardState.Selectable)
@@ -137,8 +153,16 @@ namespace SlamMatch
                     ValidatePictureBox(cardSelected);
                     this.levels[this.currentLevel].getCurrentRound().PairOfCardsValidated();
                     this.player.IncrementNumPoints(numPointsPerPairValidation);
-                    lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.levels[this.currentLevel].GetNumPointsRequiredToPass();
                     this.firstSelect = null;
+
+                    if(this.levels[this.currentLevel].getCurrentRound().roundFinished())
+                    {
+                        if (this.player.NumPoints == this.levels[this.currentLevel].GetNumPointsRequiredToPass())
+                        { NextLevel(); }
+                        else
+                        { this.levels[currentLevel].newRound(); }
+                        Console.WriteLine("Refresh this");
+                    }
                 }
                 else if (cardSelected != firstSelect && !((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag))
                 {
@@ -150,12 +174,27 @@ namespace SlamMatch
             }
         }
 
+        private void UpdateLblPoints(object sender, EventArgs e)
+        {
+            lblPoints.Text = "Points: " + this.player.NumPoints + " / " + this.levels[this.currentLevel].GetNumPointsRequiredToPass();
+        }
+
         private void ValidatePictureBox(PictureBox pic)
         {
             pic.BorderStyle = BorderStyle.None;
             pic.BackColor = Color.FromName("White");
             pic.Image = Properties.Resources.Validated;
             ((Card)pic.Tag).SetState(Card.CardState.Validated);
+        }
+
+        private void NextLevel()
+        {
+            //TODO: Check if finished max level the show winning pannel
+            this.numCards += 8;
+            int numPoints = this.levels[this.currentLevel].GetNumPointsRequiredToPass() + this.numCards / 2 * numPointsPerPairValidation;
+            this.currentLevel++;
+            this.levels[currentLevel] = new Level(this.numCards, numPoints);         
+            RefreshGameBoard();
         }
     }
 }

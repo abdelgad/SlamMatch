@@ -39,6 +39,5 @@ namespace SlamMatch
         {
             return this.numPointsRequiredToPass;
         }
-
     }
 }

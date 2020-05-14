@@ -8,26 +8,31 @@ namespace SlamMatch
 {
     class Player
     {
+        public event EventHandler OnPointsChange;
         private string nickname;
-        private int numPoints;
+        private int numPointsPrivate;
+        public int NumPoints
+        {
+            get { return numPointsPrivate; }
+            set 
+            { 
+                numPointsPrivate = value;
+                OnPointsChange(this, new EventArgs());
+            }
+        }
         private int numLives;
 
 
         public Player(string nickname)
         {
             this.nickname = nickname;
-            this.numPoints = 0;
+            this.numPointsPrivate = 0;
             this.numLives = 3;
         }
 
         public void IncrementNumPoints(int num)
         {
-            this.numPoints += num;
-        }
-
-        public int GetNumPoints()
-        {
-            return this.numPoints;
+            this.NumPoints += num;
         }
 
         public int GetNumLives()

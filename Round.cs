@@ -61,11 +61,14 @@ namespace SlamMatch
             this.numCardsValidated += 2;
         }
 
-        public List<Card> getCards()
+        public List<Card> GetCards()
         {
             return this.cards;
         }
 
-         
+        public bool roundFinished()
+        {
+            return this.numCardsValidated == this.numCards; 
+        }
     }
 }

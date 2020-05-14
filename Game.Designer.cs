@@ -36,13 +36,13 @@
             this.lblWelcome = new System.Windows.Forms.Label();
             this.btnPlay = new System.Windows.Forms.Button();
             this.pnlGameBoard = new System.Windows.Forms.Panel();
+            this.lblLevel = new System.Windows.Forms.Label();
             this.lblNumLives = new System.Windows.Forms.Label();
             this.lblPoints = new System.Windows.Forms.Label();
             this.pnlWinGame = new System.Windows.Forms.Panel();
             this.lblWinGame = new System.Windows.Forms.Label();
             this.pnlLoseGame = new System.Windows.Forms.Panel();
             this.lblLoseGame = new System.Windows.Forms.Label();
-            this.lblLevel = new System.Windows.Forms.Label();
             this.pnlWelcome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.pnlGameBoard.SuspendLayout();
@@ -114,6 +114,7 @@
             // 
             // pnlGameBoard
             // 
+            this.pnlGameBoard.AutoScroll = true;
             this.pnlGameBoard.BackColor = System.Drawing.Color.Transparent;
             this.pnlGameBoard.Controls.Add(this.lblLevel);
             this.pnlGameBoard.Controls.Add(this.lblNumLives);
@@ -123,6 +124,16 @@
             this.pnlGameBoard.Name = "pnlGameBoard";
             this.pnlGameBoard.Size = new System.Drawing.Size(800, 450);
             this.pnlGameBoard.TabIndex = 2;
+            // 
+            // lblLevel
+            // 
+            this.lblLevel.AutoSize = true;
+            this.lblLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLevel.Location = new System.Drawing.Point(21, 426);
+            this.lblLevel.Name = "lblLevel";
+            this.lblLevel.Size = new System.Drawing.Size(55, 15);
+            this.lblLevel.TabIndex = 2;
+            this.lblLevel.Text = "Niveau:";
             // 
             // lblNumLives
             // 
@@ -183,16 +194,6 @@
             this.lblLoseGame.Size = new System.Drawing.Size(640, 73);
             this.lblLoseGame.TabIndex = 0;
             this.lblLoseGame.Text = "VOUS AVEZ PERDU";
-            // 
-            // lblLevel
-            // 
-            this.lblLevel.AutoSize = true;
-            this.lblLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLevel.Location = new System.Drawing.Point(21, 426);
-            this.lblLevel.Name = "lblLevel";
-            this.lblLevel.Size = new System.Drawing.Size(55, 15);
-            this.lblLevel.TabIndex = 2;
-            this.lblLevel.Text = "Niveau:";
             // 
             // Game
             // 
