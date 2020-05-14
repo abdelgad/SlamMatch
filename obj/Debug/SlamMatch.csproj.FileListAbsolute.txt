@@ -2,9 +2,9 @@ C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\bin\Debug\SlamMatch.exe.confi
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\bin\Debug\SlamMatch.exe
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\bin\Debug\SlamMatch.pdb
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.csprojAssemblyReference.cache
-C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.Game.resources
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.Properties.Resources.resources
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.csproj.GenerateResource.cache
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.csproj.CoreCompileInputs.cache
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.exe
 C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.pdb
+C:\Users\AbdelGad\source\repos\SlamMatch\SlamMatch\obj\Debug\SlamMatch.GameView.resources
