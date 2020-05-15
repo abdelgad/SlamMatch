@@ -31,10 +31,17 @@ namespace SlamMatch
             else{
                 this.player = new Player(txtNickname.Text);
                 this.game = new Game();
-                RefreshGameBoard();
                 UpdateStats();
+                RefreshGameBoard();
                 pnlGameBoard.BringToFront();
             }
+        }
+
+        private void UpdateStats()
+        {
+            lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
+            lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.game.GetCurrentLevel().GetNumPointsRequiredToPass();
+            lblLevel.Text = "Niveau: " + (this.game.GetCurrentLevelNum() + 1) + " / " + this.game.GetMaximumLevel();
         }
 
         private void RefreshGameBoard(){
@@ -43,16 +50,8 @@ namespace SlamMatch
                     pnlGameBoard.Controls.Remove(pics[i]); 
                 }
             }
-            
             LoadPictureBoxes(this.game.GetCurrentLevel().GetCurrentRound().GetCards());
             ArrangePictureBoxes();
-        }
-
-        private void UpdateStats()
-        {
-            lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
-            lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.game.GetCurrentLevel().GetNumPointsRequiredToPass();
-            lblLevel.Text = "Niveau: " + this.game.GetCurrentLevelNum() + " / " + this.game.GetMaximumLevel();
         }
 
         private void LoadPictureBoxes(List<Card> cards){
@@ -94,7 +93,22 @@ namespace SlamMatch
                 }
             }
         }
-        
+
+        private void ValidatePictureBox(PictureBox pic)
+        {
+            pic.BorderStyle = BorderStyle.None;
+            pic.BackColor = Color.FromName("White");
+            pic.Image = Properties.Resources.Validated;
+            ((Card)pic.Tag).SetState(Card.CardState.Validated);
+        }
+
+        private void AnimatePictureBox(PictureBox pic)
+        {
+            for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
+            for (int i = 0; i < 10; i++) { pic.Location = new Point(pic.Location.X - 2, pic.Location.Y - 2); Thread.Sleep(10); }
+            for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
+        }
+
         private void Card_MouseClick(object sender, EventArgs e){
             PictureBox cardSelected = sender as PictureBox;
             Card card = cardSelected.Tag as Card;
@@ -104,46 +118,33 @@ namespace SlamMatch
                     this.firstSelect = cardSelected;
                     ((Card)this.firstSelect.Tag).SetState(Card.CardState.Selected);
                 }
-                else if(cardSelected != firstSelect && ((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag)){
-                    ValidatePictureBox(firstSelect);
-                    ValidatePictureBox(cardSelected);
-                    this.game.GetCurrentLevel().GetCurrentRound().PairOfCardsValidated();
-                    this.player.IncrementNumPoints(this.game.GetNumPointsPerValidation());
-                    
-                    this.firstSelect = null;
-
-                    if(this.game.GetCurrentLevel().GetCurrentRound().roundFinished()){
-                        if (this.player.GetNumPoints() == this.game.GetCurrentLevel().GetNumPointsRequiredToPass())
-                        {
-                            if (!this.game.NextLevel())
-                                pnlWinGame.BringToFront();
-                        }
-                        else { this.game.GetCurrentLevel().newRound(); } 
-                            
-                        RefreshGameBoard();
-                    }
-                    UpdateStats();
-                }
-                else if (cardSelected != firstSelect && !((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag)){
+                else if (cardSelected != firstSelect && !((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag))
+                {
                     AnimatePictureBox(firstSelect);
                     ((Card)firstSelect.Tag).SetState(Card.CardState.Selectable);
                     this.firstSelect.BorderStyle = BorderStyle.None;
                     this.firstSelect = null;
                 }
+                else if(cardSelected != firstSelect && ((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag)) {
+                    ValidatePictureBox(firstSelect);
+                    ValidatePictureBox(cardSelected);
+                    this.game.GetCurrentLevel().GetCurrentRound().PairOfCardsValidated();
+                    this.player.IncrementNumPoints(this.game.GetNumPointsPerValidation());
+                    this.firstSelect = null;
+
+                    if(this.game.GetCurrentLevel().GetCurrentRound().RoundFinished()) {
+                        if (this.player.GetNumPoints() < this.game.GetCurrentLevel().GetNumPointsRequiredToPass()) {
+                            this.game.GetCurrentLevel().newRound();
+                            RefreshGameBoard();
+                        }
+                        else {
+                            if (this.game.NextLevel()) RefreshGameBoard();
+                            else pnlWinGame.BringToFront();        
+                        }
+                    }
+                    UpdateStats();
+                }
             }
-        }
-
-        private void ValidatePictureBox(PictureBox pic){
-            pic.BorderStyle = BorderStyle.None;
-            pic.BackColor = Color.FromName("White");
-            pic.Image = Properties.Resources.Validated;
-            ((Card)pic.Tag).SetState(Card.CardState.Validated);
-        }
-
-        private void AnimatePictureBox(PictureBox pic){
-            for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
-            for (int i = 0; i < 10; i++) { pic.Location = new Point(pic.Location.X - 2, pic.Location.Y - 2); Thread.Sleep(10); }
-            for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
         }
     }
 }

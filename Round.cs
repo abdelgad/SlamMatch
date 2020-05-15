@@ -18,16 +18,13 @@ namespace SlamMatch
             Red,
             Blue,
             Green,
-            Yellow,
-            Orange,
-            Pink,
-            Purple
+            Yellow
         }
 
-        private Random randomizer;
         private int numCards;
         private int numCardsValidated;
         private List<Card> cards;
+        private Random randomizer;
 
         //TODO: Timer to be Added here 
 
@@ -79,7 +76,7 @@ namespace SlamMatch
             return this.cards;
         }
 
-        public bool roundFinished()
+        public bool RoundFinished()
         {
             return this.numCardsValidated == this.numCards; 
         }
