@@ -20,14 +20,19 @@ namespace SlamMatch
             this.numPoints += num;
         }
 
-        public int GetNumLives()
+        public bool DecrementNumLives()
         {
-            return this.numLives;
+            return this.numLives-- > 1;
         }
 
         public int GetNumPoints()
         {
             return this.numPoints;
+        }
+
+        public int GetNumLives()
+        {
+            return this.numLives;
         }
     }
 }

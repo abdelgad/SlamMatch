@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace SlamMatch
 {
@@ -21,18 +22,22 @@ namespace SlamMatch
             Yellow
         }
 
+        int roundDuration;
         private int numCards;
         private int numCardsValidated;
         private List<Card> cards;
+        
         private Random randomizer;
 
         //TODO: Timer to be Added here 
 
         public Round(int numCard)
         {
-            this.randomizer = new Random();
+            this.roundDuration = 10;
             this.numCards = numCard;
             this.numCardsValidated = 0;
+            this.cards = new List<Card>();
+            this.randomizer = new Random();
             GeneratePairsOfCards();
             ShuffleCards();
         }
@@ -41,8 +46,6 @@ namespace SlamMatch
         {
             CardSymbol tempCardSymbol;
             CardColor tempCardColor;
-
-            this.cards = new List<Card>();
 
             for (int i = 0; i < this.numCards; i += 2)
             {
@@ -79,6 +82,16 @@ namespace SlamMatch
         public bool RoundFinished()
         {
             return this.numCardsValidated == this.numCards; 
+        }
+
+        public void DecrementDuration()
+        {
+            this.roundDuration--;
+        }
+
+        public int GetDuration()
+        {
+            return this.roundDuration;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace SlamMatch
 {
     class Level
@@ -12,10 +14,10 @@ namespace SlamMatch
         {
             this.numPointsRequiredToPass = numPointsRequiredToPass;
             this.numCards = numCards;
-            newRound();
+            NewRound();
         }
 
-        public void newRound()
+        public void NewRound()
         {
             this.currentRound = new Round(this.numCards);
         }

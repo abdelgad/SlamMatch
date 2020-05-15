@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameView));
             this.pnlWelcome = new System.Windows.Forms.Panel();
             this.lblNickname = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             this.lblWelcome = new System.Windows.Forms.Label();
             this.btnPlay = new System.Windows.Forms.Button();
             this.pnlGameBoard = new System.Windows.Forms.Panel();
+            this.lblTimerRound = new System.Windows.Forms.Label();
             this.lblLevel = new System.Windows.Forms.Label();
             this.lblNumLives = new System.Windows.Forms.Label();
             this.lblPoints = new System.Windows.Forms.Label();
@@ -43,6 +45,7 @@
             this.lblWinGame = new System.Windows.Forms.Label();
             this.pnlLoseGame = new System.Windows.Forms.Panel();
             this.lblLoseGame = new System.Windows.Forms.Label();
+            this.tmrRound = new System.Windows.Forms.Timer(this.components);
             this.pnlWelcome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.pnlGameBoard.SuspendLayout();
@@ -110,12 +113,13 @@
             this.btnPlay.TabIndex = 0;
             this.btnPlay.Text = "Jouer";
             this.btnPlay.UseVisualStyleBackColor = true;
-            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
+            this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
             // 
             // pnlGameBoard
             // 
             this.pnlGameBoard.AutoScroll = true;
             this.pnlGameBoard.BackColor = System.Drawing.Color.Transparent;
+            this.pnlGameBoard.Controls.Add(this.lblTimerRound);
             this.pnlGameBoard.Controls.Add(this.lblLevel);
             this.pnlGameBoard.Controls.Add(this.lblNumLives);
             this.pnlGameBoard.Controls.Add(this.lblPoints);
@@ -124,6 +128,15 @@
             this.pnlGameBoard.Name = "pnlGameBoard";
             this.pnlGameBoard.Size = new System.Drawing.Size(800, 450);
             this.pnlGameBoard.TabIndex = 2;
+            // 
+            // lblTimerRound
+            // 
+            this.lblTimerRound.AutoSize = true;
+            this.lblTimerRound.Location = new System.Drawing.Point(21, 372);
+            this.lblTimerRound.Name = "lblTimerRound";
+            this.lblTimerRound.Size = new System.Drawing.Size(34, 13);
+            this.lblTimerRound.TabIndex = 3;
+            this.lblTimerRound.Text = "00:00";
             // 
             // lblLevel
             // 
@@ -195,6 +208,11 @@
             this.lblLoseGame.TabIndex = 0;
             this.lblLoseGame.Text = "VOUS AVEZ PERDU";
             // 
+            // tmrRound
+            // 
+            this.tmrRound.Interval = 1000;
+            this.tmrRound.Tick += new System.EventHandler(this.RoundTimerTick);
+            // 
             // GameView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -208,7 +226,7 @@
             this.Controls.Add(this.pnlLoseGame);
             this.Name = "GameView";
             this.Text = "SlamMatch";
-            this.Load += new System.EventHandler(this.Game_Load);
+            this.Load += new System.EventHandler(this.GameView_Load);
             this.pnlWelcome.ResumeLayout(false);
             this.pnlWelcome.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
@@ -237,6 +255,8 @@
         private System.Windows.Forms.Label lblNumLives;
         private System.Windows.Forms.Label lblPoints;
         private System.Windows.Forms.Label lblLevel;
+        private System.Windows.Forms.Timer tmrRound;
+        private System.Windows.Forms.Label lblTimerRound;
     }
 }
 

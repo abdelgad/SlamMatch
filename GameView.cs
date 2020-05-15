@@ -20,18 +20,17 @@ namespace SlamMatch
             InitializeComponent();
         }
 
-        private void Game_Load(object sender, EventArgs e){
-            pnlWelcome.BringToFront();
+        private void GameView_Load(object sender, EventArgs e){
+            pnlWelcome.BringToFront();   
         }
 
-        private void btnPlay_Click(object sender, EventArgs e){
+        private void BtnPlay_Click(object sender, EventArgs e){
             if(string.IsNullOrEmpty(txtNickname.Text)){
                 MessageBox.Show("Entrez un pseudo avant de jouer.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
             }
             else{
                 this.player = new Player(txtNickname.Text);
                 this.game = new Game();
-                UpdateStats();
                 RefreshGameBoard();
                 pnlGameBoard.BringToFront();
             }
@@ -44,7 +43,8 @@ namespace SlamMatch
             lblLevel.Text = "Niveau: " + (this.game.GetCurrentLevelNum() + 1) + " / " + this.game.GetMaximumLevel();
         }
 
-        private void RefreshGameBoard(){
+        private void RefreshGameBoard() {
+            firstSelect = null;
             if(this.pics != null){
                 for(int i = 0; i < pics.Length; i++){
                     pnlGameBoard.Controls.Remove(pics[i]); 
@@ -52,6 +52,8 @@ namespace SlamMatch
             }
             LoadPictureBoxes(this.game.GetCurrentLevel().GetCurrentRound().GetCards());
             ArrangePictureBoxes();
+            StartRoundTimer();
+            UpdateStats();
         }
 
         private void LoadPictureBoxes(List<Card> cards){
@@ -109,32 +111,34 @@ namespace SlamMatch
             for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
         }
 
-        private void Card_MouseClick(object sender, EventArgs e){
-            PictureBox cardSelected = sender as PictureBox;
-            Card card = cardSelected.Tag as Card;
-            if (card.GetState() == Card.CardState.Selectable){
+        private void Card_MouseClick(object sender, EventArgs e) {
+            PictureBox picClicked = sender as PictureBox;
+            Card cardSelected = picClicked.Tag as Card;
+            
+            if (cardSelected.GetState() == Card.CardState.Selectable){
                 if (this.firstSelect == null){
-                    cardSelected.BorderStyle = BorderStyle.Fixed3D;
-                    this.firstSelect = cardSelected;
+                    picClicked.BorderStyle = BorderStyle.Fixed3D;
+                    this.firstSelect = picClicked;
                     ((Card)this.firstSelect.Tag).SetState(Card.CardState.Selected);
                 }
-                else if (cardSelected != firstSelect && !((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag))
+                else if (picClicked != firstSelect && !((Card)picClicked.Tag).Equals((Card)firstSelect.Tag))
                 {
                     AnimatePictureBox(firstSelect);
                     ((Card)firstSelect.Tag).SetState(Card.CardState.Selectable);
                     this.firstSelect.BorderStyle = BorderStyle.None;
                     this.firstSelect = null;
                 }
-                else if(cardSelected != firstSelect && ((Card)cardSelected.Tag).Equals((Card)firstSelect.Tag)) {
+                else if(picClicked != firstSelect && ((Card)picClicked.Tag).Equals((Card)firstSelect.Tag)) {
                     ValidatePictureBox(firstSelect);
-                    ValidatePictureBox(cardSelected);
+                    ValidatePictureBox(picClicked);
                     this.game.GetCurrentLevel().GetCurrentRound().PairOfCardsValidated();
                     this.player.IncrementNumPoints(this.game.GetNumPointsPerValidation());
                     this.firstSelect = null;
 
                     if(this.game.GetCurrentLevel().GetCurrentRound().RoundFinished()) {
+                        tmrRound.Stop();
                         if (this.player.GetNumPoints() < this.game.GetCurrentLevel().GetNumPointsRequiredToPass()) {
-                            this.game.GetCurrentLevel().newRound();
+                            this.game.GetCurrentLevel().NewRound();
                             RefreshGameBoard();
                         }
                         else {
@@ -143,6 +147,29 @@ namespace SlamMatch
                         }
                     }
                     UpdateStats();
+                }
+            }
+            else if(cardSelected.GetState() == Card.CardState.Selected && cardSelected == (Card)firstSelect.Tag){
+                ((Card)firstSelect.Tag).SetState(Card.CardState.Selectable);
+                firstSelect.BorderStyle = BorderStyle.None;
+                firstSelect = null;
+            }
+        }
+
+        private void StartRoundTimer(){
+            lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetDuration();
+            tmrRound.Start();
+        }
+
+        private void RoundTimerTick(object sender, EventArgs e){
+            this.game.GetCurrentLevel().GetCurrentRound().DecrementDuration();
+            lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetDuration().ToString("D2");
+            if (this.game.GetCurrentLevel().GetCurrentRound().GetDuration() == 0) {
+                tmrRound.Stop();
+                if (!this.player.DecrementNumLives()) pnlLoseGame.BringToFront();
+                else{
+                    this.game.GetCurrentLevel().NewRound();
+                    RefreshGameBoard();
                 }
             }
         }
