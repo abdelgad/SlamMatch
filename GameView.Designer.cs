@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameView));
             this.pnlWelcome = new System.Windows.Forms.Panel();
+            this.lblGameRules = new System.Windows.Forms.Label();
+            this.btnGameRules = new System.Windows.Forms.Button();
             this.btnPlay = new System.Windows.Forms.Button();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.lblWelcome = new System.Windows.Forms.Label();
@@ -61,6 +63,8 @@
             // 
             this.pnlWelcome.BackColor = System.Drawing.Color.Transparent;
             this.pnlWelcome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlWelcome.Controls.Add(this.lblGameRules);
+            this.pnlWelcome.Controls.Add(this.btnGameRules);
             this.pnlWelcome.Controls.Add(this.btnPlay);
             this.pnlWelcome.Controls.Add(this.pbLogo);
             this.pnlWelcome.Controls.Add(this.lblWelcome);
@@ -70,10 +74,35 @@
             this.pnlWelcome.Size = new System.Drawing.Size(984, 761);
             this.pnlWelcome.TabIndex = 1;
             // 
+            // lblGameRules
+            // 
+            this.lblGameRules.AutoSize = true;
+            this.lblGameRules.BackColor = System.Drawing.Color.DimGray;
+            this.lblGameRules.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblGameRules.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGameRules.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblGameRules.Location = new System.Drawing.Point(12, 621);
+            this.lblGameRules.Name = "lblGameRules";
+            this.lblGameRules.Size = new System.Drawing.Size(517, 92);
+            this.lblGameRules.TabIndex = 4;
+            this.lblGameRules.Text = resources.GetString("lblGameRules.Text");
+            this.lblGameRules.Visible = false;
+            // 
+            // btnGameRules
+            // 
+            this.btnGameRules.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGameRules.Location = new System.Drawing.Point(12, 716);
+            this.btnGameRules.Name = "btnGameRules";
+            this.btnGameRules.Size = new System.Drawing.Size(115, 33);
+            this.btnGameRules.TabIndex = 3;
+            this.btnGameRules.Text = "Règles de jeu";
+            this.btnGameRules.UseVisualStyleBackColor = true;
+            this.btnGameRules.Click += new System.EventHandler(this.BtnGameRules_Click);
+            // 
             // btnPlay
             // 
             this.btnPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPlay.Location = new System.Drawing.Point(358, 567);
+            this.btnPlay.Location = new System.Drawing.Point(358, 552);
             this.btnPlay.Name = "btnPlay";
             this.btnPlay.Size = new System.Drawing.Size(269, 51);
             this.btnPlay.TabIndex = 0;
@@ -299,6 +328,8 @@
         private System.Windows.Forms.Label lblReplayWinGame;
         private System.Windows.Forms.Label lblReplayLoseGame;
         private System.Windows.Forms.PictureBox pbThumbsDown;
+        private System.Windows.Forms.Button btnGameRules;
+        private System.Windows.Forms.Label lblGameRules;
     }
 }
 

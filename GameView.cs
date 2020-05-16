@@ -24,6 +24,10 @@ namespace SlamMatch
             pnlWelcome.BringToFront();   
         }
 
+        private void BtnGameRules_Click(object sender, EventArgs e){
+            lblGameRules.Visible = !(lblGameRules.Visible);
+        }
+
         private void BtnPlay_Click(object sender, EventArgs e) {
                 this.player = new Player();
                 this.game = new Game();

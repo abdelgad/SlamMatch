@@ -6,6 +6,7 @@ namespace SlamMatch
 {
     class Card
     {
+        //
         public enum CardState
         {
             Selectable,
