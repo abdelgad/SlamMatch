@@ -3,14 +3,12 @@ namespace SlamMatch
 {
     class Player
     {
-        private string nickname;
         private int numPoints;
         private int numLives;
 
 
-        public Player(string nickname)
+        public Player()
         {
-            this.nickname = nickname;
             this.numPoints = 0;
             this.numLives = 3;
         }

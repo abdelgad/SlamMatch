@@ -19,7 +19,7 @@ namespace SlamMatch
             Red,
             Blue,
             Green,
-            Yellow
+            Yellow,
         }
 
         int roundDuration;

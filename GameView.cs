@@ -14,39 +14,33 @@ namespace SlamMatch
         private const int PictureBoxWidth = 100;
         private const int PictureBoxHeight = 150;
         private PictureBox[] pics;
-        private PictureBox firstSelect;
+        private PictureBox firstPicClicked;
 
-        public GameView(){
+        public GameView() {
             InitializeComponent();
         }
 
-        private void GameView_Load(object sender, EventArgs e){
+        private void GameView_Load(object sender, EventArgs e) {
             pnlWelcome.BringToFront();   
         }
 
-        private void BtnPlay_Click(object sender, EventArgs e){
-            if(string.IsNullOrEmpty(txtNickname.Text)){
-                MessageBox.Show("Entrez un pseudo avant de jouer.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-            }
-            else{
-                this.player = new Player(txtNickname.Text);
+        private void BtnPlay_Click(object sender, EventArgs e) {
+                this.player = new Player();
                 this.game = new Game();
                 RefreshGameBoard();
                 pnlGameBoard.BringToFront();
-            }
         }
 
-        private void UpdateStats()
-        {
+        private void UpdateStats() {
             lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
             lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.game.GetCurrentLevel().GetNumPointsRequiredToPass();
             lblLevel.Text = "Niveau: " + (this.game.GetCurrentLevelNum() + 1) + " / " + this.game.GetMaximumLevel();
         }
 
         private void RefreshGameBoard() {
-            firstSelect = null;
-            if(this.pics != null){
-                for(int i = 0; i < pics.Length; i++){
+            firstPicClicked = null;
+            if(this.pics != null) {
+                for(int i = 0; i < pics.Length; i++) {
                     pnlGameBoard.Controls.Remove(pics[i]); 
                 }
             }
@@ -56,14 +50,14 @@ namespace SlamMatch
             UpdateStats();
         }
 
-        private void LoadPictureBoxes(List<Card> cards){
+        private void LoadPictureBoxes(List<Card> cards) {
             this.pics = new PictureBox[cards.Count];
-            for (int i = 0; i < cards.Count; i++){
+            for (int i = 0; i < cards.Count; i++) {
                 pics[i] = LoadCard(cards[i]);
             }
         }
         
-        private PictureBox LoadCard(Card card){
+        private PictureBox LoadCard(Card card) {
             PictureBox pic = new PictureBox();
             pic.Size = new Size(PictureBoxWidth, PictureBoxHeight);
             pic.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -78,34 +72,31 @@ namespace SlamMatch
             return pic;
         }
 
-        private void ArrangePictureBoxes()
-        {
-            int numCards = this.game.GetCurrentLevel().GetNumCards();
-            int margin = 10;
+        private void ArrangePictureBoxes() {
+            int numPics = this.pics.Length;
             int numCardsPerLine = 4;
-            int y = (int)(pics[0].Parent.Height - PictureBoxHeight * (Math.Ceiling(numCards / (double)numCardsPerLine))) / 2;
+            int margin = 10;
+            int y = (int)(pics[0].Parent.Height - PictureBoxHeight * (Math.Ceiling(numPics / (double)numCardsPerLine))) / 2;
             int x = (pics[0].Parent.Width - PictureBoxWidth * numCardsPerLine) / 2;
-            for (int i = 0; i < numCards; i++){
+            for (int i = 0; i < numPics; i++) {
                 pics[i].Location = new Point(x, y);
                 x += pics[0].Width + margin;
 
-                if ((i + 1) % numCardsPerLine == 0){
+                if ((i + 1) % numCardsPerLine == 0) {
                     x = (pics[0].Parent.Width - PictureBoxWidth * numCardsPerLine) / 2;
                     y += pics[0].Height + margin;
                 }
             }
         }
 
-        private void ValidatePictureBox(PictureBox pic)
-        {
+        private void ValidatePictureBox(PictureBox pic) {
             pic.BorderStyle = BorderStyle.None;
             pic.BackColor = Color.FromName("White");
             pic.Image = Properties.Resources.Validated;
             ((Card)pic.Tag).SetState(Card.CardState.Validated);
         }
 
-        private void AnimatePictureBox(PictureBox pic)
-        {
+        private void AnimatePictureBox(PictureBox pic) {
             for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
             for (int i = 0; i < 10; i++) { pic.Location = new Point(pic.Location.X - 2, pic.Location.Y - 2); Thread.Sleep(10); }
             for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
@@ -115,25 +106,24 @@ namespace SlamMatch
             PictureBox picClicked = sender as PictureBox;
             Card cardSelected = picClicked.Tag as Card;
             
-            if (cardSelected.GetState() == Card.CardState.Selectable){
-                if (this.firstSelect == null){
+            if (cardSelected.GetState() == Card.CardState.Selectable) {
+                if (this.firstPicClicked == null){
                     picClicked.BorderStyle = BorderStyle.Fixed3D;
-                    this.firstSelect = picClicked;
-                    ((Card)this.firstSelect.Tag).SetState(Card.CardState.Selected);
+                    this.firstPicClicked = picClicked;
+                    ((Card)this.firstPicClicked.Tag).SetState(Card.CardState.Selected);
                 }
-                else if (picClicked != firstSelect && !((Card)picClicked.Tag).Equals((Card)firstSelect.Tag))
-                {
-                    AnimatePictureBox(firstSelect);
-                    ((Card)firstSelect.Tag).SetState(Card.CardState.Selectable);
-                    this.firstSelect.BorderStyle = BorderStyle.None;
-                    this.firstSelect = null;
+                else if (picClicked != firstPicClicked && !((Card)picClicked.Tag).Equals((Card)firstPicClicked.Tag)) {
+                    AnimatePictureBox(firstPicClicked);
+                    ((Card)firstPicClicked.Tag).SetState(Card.CardState.Selectable);
+                    this.firstPicClicked.BorderStyle = BorderStyle.None;
+                    this.firstPicClicked = null;
                 }
-                else if(picClicked != firstSelect && ((Card)picClicked.Tag).Equals((Card)firstSelect.Tag)) {
-                    ValidatePictureBox(firstSelect);
+                else if(picClicked != firstPicClicked && ((Card)picClicked.Tag).Equals((Card)firstPicClicked.Tag)) {
+                    ValidatePictureBox(firstPicClicked);
                     ValidatePictureBox(picClicked);
                     this.game.GetCurrentLevel().GetCurrentRound().PairOfCardsValidated();
                     this.player.IncrementNumPoints(this.game.GetNumPointsPerValidation());
-                    this.firstSelect = null;
+                    this.firstPicClicked = null;
 
                     if(this.game.GetCurrentLevel().GetCurrentRound().RoundFinished()) {
                         tmrRound.Stop();
@@ -149,25 +139,25 @@ namespace SlamMatch
                     UpdateStats();
                 }
             }
-            else if(cardSelected.GetState() == Card.CardState.Selected && cardSelected == (Card)firstSelect.Tag){
-                ((Card)firstSelect.Tag).SetState(Card.CardState.Selectable);
-                firstSelect.BorderStyle = BorderStyle.None;
-                firstSelect = null;
+            else if (cardSelected.GetState() == Card.CardState.Selected && cardSelected == (Card)firstPicClicked.Tag) {
+                ((Card)firstPicClicked.Tag).SetState(Card.CardState.Selectable);
+                firstPicClicked.BorderStyle = BorderStyle.None;
+                firstPicClicked = null;
             }
         }
 
-        private void StartRoundTimer(){
+        private void StartRoundTimer() {
             lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetDuration();
             tmrRound.Start();
         }
 
-        private void RoundTimerTick(object sender, EventArgs e){
+        private void RoundTimerTick(object sender, EventArgs e) {
             this.game.GetCurrentLevel().GetCurrentRound().DecrementDuration();
             lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetDuration().ToString("D2");
             if (this.game.GetCurrentLevel().GetCurrentRound().GetDuration() == 0) {
                 tmrRound.Stop();
                 if (!this.player.DecrementNumLives()) pnlLoseGame.BringToFront();
-                else{
+                else {
                     this.game.GetCurrentLevel().NewRound();
                     RefreshGameBoard();
                 }

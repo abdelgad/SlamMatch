@@ -31,65 +31,62 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameView));
             this.pnlWelcome = new System.Windows.Forms.Panel();
-            this.lblNickname = new System.Windows.Forms.Label();
-            this.txtNickname = new System.Windows.Forms.TextBox();
+            this.btnPlay = new System.Windows.Forms.Button();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.lblWelcome = new System.Windows.Forms.Label();
-            this.btnPlay = new System.Windows.Forms.Button();
             this.pnlGameBoard = new System.Windows.Forms.Panel();
             this.lblTimerRound = new System.Windows.Forms.Label();
             this.lblLevel = new System.Windows.Forms.Label();
             this.lblNumLives = new System.Windows.Forms.Label();
             this.lblPoints = new System.Windows.Forms.Label();
             this.pnlWinGame = new System.Windows.Forms.Panel();
+            this.lblReplayWinGame = new System.Windows.Forms.Label();
+            this.pbThumpsUp = new System.Windows.Forms.PictureBox();
             this.lblWinGame = new System.Windows.Forms.Label();
             this.pnlLoseGame = new System.Windows.Forms.Panel();
+            this.lblReplayLoseGame = new System.Windows.Forms.Label();
+            this.pbThumbsDown = new System.Windows.Forms.PictureBox();
             this.lblLoseGame = new System.Windows.Forms.Label();
             this.tmrRound = new System.Windows.Forms.Timer(this.components);
             this.pnlWelcome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.pnlGameBoard.SuspendLayout();
             this.pnlWinGame.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbThumpsUp)).BeginInit();
             this.pnlLoseGame.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbThumbsDown)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlWelcome
             // 
             this.pnlWelcome.BackColor = System.Drawing.Color.Transparent;
             this.pnlWelcome.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pnlWelcome.Controls.Add(this.lblNickname);
-            this.pnlWelcome.Controls.Add(this.txtNickname);
+            this.pnlWelcome.Controls.Add(this.btnPlay);
             this.pnlWelcome.Controls.Add(this.pbLogo);
             this.pnlWelcome.Controls.Add(this.lblWelcome);
-            this.pnlWelcome.Controls.Add(this.btnPlay);
             this.pnlWelcome.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlWelcome.Location = new System.Drawing.Point(0, 0);
             this.pnlWelcome.Name = "pnlWelcome";
-            this.pnlWelcome.Size = new System.Drawing.Size(800, 450);
+            this.pnlWelcome.Size = new System.Drawing.Size(984, 761);
             this.pnlWelcome.TabIndex = 1;
             // 
-            // lblNickname
+            // btnPlay
             // 
-            this.lblNickname.AutoSize = true;
-            this.lblNickname.Location = new System.Drawing.Point(253, 333);
-            this.lblNickname.Name = "lblNickname";
-            this.lblNickname.Size = new System.Drawing.Size(74, 13);
-            this.lblNickname.TabIndex = 4;
-            this.lblNickname.Text = "Votre Pseudo:";
-            // 
-            // txtNickname
-            // 
-            this.txtNickname.Location = new System.Drawing.Point(333, 330);
-            this.txtNickname.Name = "txtNickname";
-            this.txtNickname.Size = new System.Drawing.Size(135, 20);
-            this.txtNickname.TabIndex = 3;
+            this.btnPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPlay.Location = new System.Drawing.Point(358, 567);
+            this.btnPlay.Name = "btnPlay";
+            this.btnPlay.Size = new System.Drawing.Size(269, 51);
+            this.btnPlay.TabIndex = 0;
+            this.btnPlay.Text = "Jouer";
+            this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
             // 
             // pbLogo
             // 
             this.pbLogo.Image = ((System.Drawing.Image)(resources.GetObject("pbLogo.Image")));
-            this.pbLogo.Location = new System.Drawing.Point(170, 12);
+            this.pbLogo.Location = new System.Drawing.Point(95, 87);
             this.pbLogo.Name = "pbLogo";
-            this.pbLogo.Size = new System.Drawing.Size(465, 217);
+            this.pbLogo.Size = new System.Drawing.Size(795, 366);
             this.pbLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbLogo.TabIndex = 2;
             this.pbLogo.TabStop = false;
@@ -98,22 +95,11 @@
             // 
             this.lblWelcome.AutoSize = true;
             this.lblWelcome.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWelcome.Location = new System.Drawing.Point(315, 253);
+            this.lblWelcome.Location = new System.Drawing.Point(404, 486);
             this.lblWelcome.Name = "lblWelcome";
             this.lblWelcome.Size = new System.Drawing.Size(174, 37);
             this.lblWelcome.TabIndex = 1;
             this.lblWelcome.Text = "Bienvenue";
-            // 
-            // btnPlay
-            // 
-            this.btnPlay.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPlay.Location = new System.Drawing.Point(285, 372);
-            this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(230, 48);
-            this.btnPlay.TabIndex = 0;
-            this.btnPlay.Text = "Jouer";
-            this.btnPlay.UseVisualStyleBackColor = true;
-            this.btnPlay.Click += new System.EventHandler(this.BtnPlay_Click);
             // 
             // pnlGameBoard
             // 
@@ -126,15 +112,18 @@
             this.pnlGameBoard.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlGameBoard.Location = new System.Drawing.Point(0, 0);
             this.pnlGameBoard.Name = "pnlGameBoard";
-            this.pnlGameBoard.Size = new System.Drawing.Size(800, 450);
+            this.pnlGameBoard.Size = new System.Drawing.Size(984, 761);
             this.pnlGameBoard.TabIndex = 2;
             // 
             // lblTimerRound
             // 
             this.lblTimerRound.AutoSize = true;
-            this.lblTimerRound.Location = new System.Drawing.Point(21, 372);
+            this.lblTimerRound.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimerRound.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTimerRound.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblTimerRound.Location = new System.Drawing.Point(449, 31);
             this.lblTimerRound.Name = "lblTimerRound";
-            this.lblTimerRound.Size = new System.Drawing.Size(34, 13);
+            this.lblTimerRound.Size = new System.Drawing.Size(87, 31);
             this.lblTimerRound.TabIndex = 3;
             this.lblTimerRound.Text = "00:00";
             // 
@@ -142,7 +131,7 @@
             // 
             this.lblLevel.AutoSize = true;
             this.lblLevel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLevel.Location = new System.Drawing.Point(21, 426);
+            this.lblLevel.Location = new System.Drawing.Point(12, 56);
             this.lblLevel.Name = "lblLevel";
             this.lblLevel.Size = new System.Drawing.Size(55, 15);
             this.lblLevel.TabIndex = 2;
@@ -151,10 +140,10 @@
             // lblNumLives
             // 
             this.lblNumLives.AutoSize = true;
-            this.lblNumLives.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNumLives.Location = new System.Drawing.Point(21, 386);
+            this.lblNumLives.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNumLives.Location = new System.Drawing.Point(12, 9);
             this.lblNumLives.Name = "lblNumLives";
-            this.lblNumLives.Size = new System.Drawing.Size(111, 15);
+            this.lblNumLives.Size = new System.Drawing.Size(122, 16);
             this.lblNumLives.TabIndex = 1;
             this.lblNumLives.Text = "Nombre de vies:";
             // 
@@ -162,7 +151,7 @@
             // 
             this.lblPoints.AutoSize = true;
             this.lblPoints.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPoints.Location = new System.Drawing.Point(21, 405);
+            this.lblPoints.Location = new System.Drawing.Point(12, 33);
             this.lblPoints.Name = "lblPoints";
             this.lblPoints.Size = new System.Drawing.Size(51, 15);
             this.lblPoints.TabIndex = 0;
@@ -171,42 +160,87 @@
             // pnlWinGame
             // 
             this.pnlWinGame.BackColor = System.Drawing.Color.Transparent;
+            this.pnlWinGame.Controls.Add(this.lblReplayWinGame);
+            this.pnlWinGame.Controls.Add(this.pbThumpsUp);
             this.pnlWinGame.Controls.Add(this.lblWinGame);
             this.pnlWinGame.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlWinGame.Location = new System.Drawing.Point(0, 0);
             this.pnlWinGame.Name = "pnlWinGame";
-            this.pnlWinGame.Size = new System.Drawing.Size(800, 450);
+            this.pnlWinGame.Size = new System.Drawing.Size(984, 761);
             this.pnlWinGame.TabIndex = 3;
+            // 
+            // lblReplayWinGame
+            // 
+            this.lblReplayWinGame.AutoSize = true;
+            this.lblReplayWinGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReplayWinGame.Location = new System.Drawing.Point(371, 437);
+            this.lblReplayWinGame.Name = "lblReplayWinGame";
+            this.lblReplayWinGame.Size = new System.Drawing.Size(242, 20);
+            this.lblReplayWinGame.TabIndex = 3;
+            this.lblReplayWinGame.Text = "Appuyez sur espace pour rejouer";
+            // 
+            // pbThumpsUp
+            // 
+            this.pbThumpsUp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pbThumpsUp.Image = global::SlamMatch.Properties.Resources.thumbsup;
+            this.pbThumpsUp.Location = new System.Drawing.Point(365, 87);
+            this.pbThumpsUp.Name = "pbThumpsUp";
+            this.pbThumpsUp.Size = new System.Drawing.Size(213, 210);
+            this.pbThumpsUp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbThumpsUp.TabIndex = 2;
+            this.pbThumpsUp.TabStop = false;
             // 
             // lblWinGame
             // 
             this.lblWinGame.AutoSize = true;
             this.lblWinGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWinGame.Location = new System.Drawing.Point(129, 189);
+            this.lblWinGame.Location = new System.Drawing.Point(228, 344);
             this.lblWinGame.Name = "lblWinGame";
-            this.lblWinGame.Size = new System.Drawing.Size(543, 73);
+            this.lblWinGame.Size = new System.Drawing.Size(529, 73);
             this.lblWinGame.TabIndex = 1;
-            this.lblWinGame.Text = "Vous avez Gagne";
+            this.lblWinGame.Text = "Vous avez gagné";
             // 
             // pnlLoseGame
             // 
             this.pnlLoseGame.BackColor = System.Drawing.Color.Transparent;
+            this.pnlLoseGame.Controls.Add(this.lblReplayLoseGame);
+            this.pnlLoseGame.Controls.Add(this.pbThumbsDown);
             this.pnlLoseGame.Controls.Add(this.lblLoseGame);
             this.pnlLoseGame.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlLoseGame.Location = new System.Drawing.Point(0, 0);
             this.pnlLoseGame.Name = "pnlLoseGame";
-            this.pnlLoseGame.Size = new System.Drawing.Size(800, 450);
+            this.pnlLoseGame.Size = new System.Drawing.Size(984, 761);
             this.pnlLoseGame.TabIndex = 4;
+            // 
+            // lblReplayLoseGame
+            // 
+            this.lblReplayLoseGame.AutoSize = true;
+            this.lblReplayLoseGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReplayLoseGame.Location = new System.Drawing.Point(346, 429);
+            this.lblReplayLoseGame.Name = "lblReplayLoseGame";
+            this.lblReplayLoseGame.Size = new System.Drawing.Size(292, 24);
+            this.lblReplayLoseGame.TabIndex = 2;
+            this.lblReplayLoseGame.Text = "Appuyez sur espace pour rejouer";
+            // 
+            // pbThumbsDown
+            // 
+            this.pbThumbsDown.Image = global::SlamMatch.Properties.Resources.thumbsdown;
+            this.pbThumbsDown.Location = new System.Drawing.Point(365, 87);
+            this.pbThumbsDown.Name = "pbThumbsDown";
+            this.pbThumbsDown.Size = new System.Drawing.Size(213, 210);
+            this.pbThumbsDown.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbThumbsDown.TabIndex = 1;
+            this.pbThumbsDown.TabStop = false;
             // 
             // lblLoseGame
             // 
             this.lblLoseGame.AutoSize = true;
             this.lblLoseGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLoseGame.Location = new System.Drawing.Point(80, 189);
+            this.lblLoseGame.Location = new System.Drawing.Point(235, 344);
             this.lblLoseGame.Name = "lblLoseGame";
-            this.lblLoseGame.Size = new System.Drawing.Size(640, 73);
+            this.lblLoseGame.Size = new System.Drawing.Size(514, 73);
             this.lblLoseGame.TabIndex = 0;
-            this.lblLoseGame.Text = "VOUS AVEZ PERDU";
+            this.lblLoseGame.Text = "Vous avez perdu";
             // 
             // tmrRound
             // 
@@ -217,14 +251,18 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Bisque;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.pnlGameBoard);
+            this.BackColor = System.Drawing.Color.Wheat;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ClientSize = new System.Drawing.Size(984, 761);
             this.Controls.Add(this.pnlWelcome);
-            this.Controls.Add(this.pnlWinGame);
             this.Controls.Add(this.pnlLoseGame);
+            this.Controls.Add(this.pnlWinGame);
+            this.Controls.Add(this.pnlGameBoard);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "GameView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SlamMatch";
             this.Load += new System.EventHandler(this.GameView_Load);
             this.pnlWelcome.ResumeLayout(false);
@@ -234,8 +272,10 @@
             this.pnlGameBoard.PerformLayout();
             this.pnlWinGame.ResumeLayout(false);
             this.pnlWinGame.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbThumpsUp)).EndInit();
             this.pnlLoseGame.ResumeLayout(false);
             this.pnlLoseGame.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbThumbsDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -245,8 +285,6 @@
         private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.PictureBox pbLogo;
-        private System.Windows.Forms.TextBox txtNickname;
-        private System.Windows.Forms.Label lblNickname;
         private System.Windows.Forms.Panel pnlGameBoard;
         private System.Windows.Forms.Panel pnlWinGame;
         private System.Windows.Forms.Panel pnlLoseGame;
@@ -257,6 +295,10 @@
         private System.Windows.Forms.Label lblLevel;
         private System.Windows.Forms.Timer tmrRound;
         private System.Windows.Forms.Label lblTimerRound;
+        private System.Windows.Forms.PictureBox pbThumpsUp;
+        private System.Windows.Forms.Label lblReplayWinGame;
+        private System.Windows.Forms.Label lblReplayLoseGame;
+        private System.Windows.Forms.PictureBox pbThumbsDown;
     }
 }
 

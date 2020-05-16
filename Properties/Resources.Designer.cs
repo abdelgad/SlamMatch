@@ -111,11 +111,41 @@ namespace SlamMatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon slammatch {
+            get {
+                object obj = ResourceManager.GetObject("slammatch", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Sphinx {
             get {
                 object obj = ResourceManager.GetObject("Sphinx", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap thumbsdown {
+            get {
+                object obj = ResourceManager.GetObject("thumbsdown", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap thumbsup {
+            get {
+                object obj = ResourceManager.GetObject("thumbsup", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
