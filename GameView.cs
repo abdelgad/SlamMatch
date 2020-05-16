@@ -24,10 +24,12 @@ namespace SlamMatch
             pnlWelcome.BringToFront();   
         }
 
-        private void BtnGameRules_Click(object sender, EventArgs e){
-            lblGameRules.Visible = !(lblGameRules.Visible);
+        //Affiche le label contenant les règles du jeu lorsque l'utilisateur clique sur le bouton btnGameRules
+        private void BtnGameRules_Click(object sender, EventArgs e) {
+            lblGameRules.Visible = !lblGameRules.Visible;
         }
 
+        //Initialise le joueur et le jeu et met à jour le plateau de jeu (pannel = pnlGameBoard) et affiche ce panneau 
         private void BtnPlay_Click(object sender, EventArgs e) {
                 this.player = new Player();
                 this.game = new Game();
@@ -35,12 +37,14 @@ namespace SlamMatch
                 pnlGameBoard.BringToFront();
         }
 
+        //Met à jour les information de la partie (niveau actuel/niveau maximal) et les informations de joueur (nombre de vies / nombre de points)
         private void UpdateStats() {
             lblNumLives.Text = "Nombre de vies: " + this.player.GetNumLives();
             lblPoints.Text = "Points: " + this.player.GetNumPoints() + " / " + this.game.GetCurrentLevel().GetNumPointsRequiredToPass();
             lblLevel.Text = "Niveau: " + (this.game.GetCurrentLevelNum() + 1) + " / " + this.game.GetMaximumLevel();
         }
 
+        //Génère + Organise les pictureboxes sur le plateau et commence le timer et met à jour les informations du joueur
         private void RefreshGameBoard() {
             firstPicClicked = null;
             if(this.pics != null) {
@@ -54,6 +58,7 @@ namespace SlamMatch
             UpdateStats();
         }
 
+        //Génère des pictureboxes à partir d'une collection de cartes
         private void LoadPictureBoxes(List<Card> cards) {
             this.pics = new PictureBox[cards.Count];
             for (int i = 0; i < cards.Count; i++) {
@@ -61,6 +66,7 @@ namespace SlamMatch
             }
         }
         
+        //Génère un picturebox à partir d'une carte
         private PictureBox LoadCard(Card card) {
             PictureBox pic = new PictureBox();
             pic.Size = new Size(PictureBoxWidth, PictureBoxHeight);
@@ -76,6 +82,7 @@ namespace SlamMatch
             return pic;
         }
 
+        //Organise l'ensemble de pictureboxes sur le plateau de jeu
         private void ArrangePictureBoxes() {
             int numPics = this.pics.Length;
             int numCardsPerLine = 4;
@@ -93,6 +100,7 @@ namespace SlamMatch
             }
         }
 
+        //Met à jour l'aspect visuel d'un picturebox pour correspondre à une carte validée 
         private void ValidatePictureBox(PictureBox pic) {
             pic.BorderStyle = BorderStyle.None;
             pic.BackColor = Color.FromName("White");
@@ -100,12 +108,18 @@ namespace SlamMatch
             ((Card)pic.Tag).SetState(Card.CardState.Validated);
         }
 
+        //Anime un picturebox pour signaler une erreur de séléction à l'utilisateur
         private void AnimatePictureBox(PictureBox pic) {
             for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
             for (int i = 0; i < 10; i++) { pic.Location = new Point(pic.Location.X - 2, pic.Location.Y - 2); Thread.Sleep(10); }
             for (int i = 0; i < 5; i++) { pic.Location = new Point(pic.Location.X + 2, pic.Location.Y + 2); Thread.Sleep(10); }
         }
 
+        //Lorsque le joueur clique sur une carte (qui est representée par un picturebox) et si cette carte est sélectionnable :
+        //Si aucune autre carte est selectionnée => définie comme la première carte séléctionnée + Màj visuel
+        //Si le joueur séléctionne deux cartes différéntes => Animation + retour à l'état initiale
+        //Si le joeur associe une paire => màj visuel des deux cartes comme cartes validées
+        //Si le joueur clique deux fois sur la même carte => la carte est déselectionnée 
         private void Card_MouseClick(object sender, EventArgs e) {
             PictureBox picClicked = sender as PictureBox;
             Card cardSelected = picClicked.Tag as Card;
@@ -150,15 +164,20 @@ namespace SlamMatch
             }
         }
 
+        //Met à jour le label qui affiche le timer + Commence le timer
         private void StartRoundTimer() {
-            lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetDuration();
+            lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetTimeLeft();
             tmrRound.Start();
         }
 
+        //Met à jour le label qui affiche le timer
+        //Arrête le timer lorsque le temps restant dans le tour = 0 et décrémente le nombre de vies du joueur
+        //Si le joueur possède au moins 1 vie après la décrémentation, génère un noveau tour et met à jour le plateu de jeu
+        //Sinon elle affiche le panneau (pnlLoseGame)
         private void RoundTimerTick(object sender, EventArgs e) {
-            this.game.GetCurrentLevel().GetCurrentRound().DecrementDuration();
-            lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetDuration().ToString("D2");
-            if (this.game.GetCurrentLevel().GetCurrentRound().GetDuration() == 0) {
+            this.game.GetCurrentLevel().GetCurrentRound().DecrementTimer();
+            lblTimerRound.Text = "00: " + this.game.GetCurrentLevel().GetCurrentRound().GetTimeLeft().ToString("D2");
+            if (this.game.GetCurrentLevel().GetCurrentRound().GetTimeLeft() == 0) {
                 tmrRound.Stop();
                 if (!this.player.DecrementNumLives()) pnlLoseGame.BringToFront();
                 else {

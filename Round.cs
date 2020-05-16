@@ -6,6 +6,9 @@ namespace SlamMatch
 {
     class Round
     {
+        /// <summary>
+        /// Un ensemble de constantes contentant tous les symboles possibles d'une carte
+        /// </summary>
         public enum CardSymbol
         {
             Nefertiti,
@@ -14,6 +17,11 @@ namespace SlamMatch
             Sphinx
         }
 
+        /// <summary>
+        /// Un ensemble de constantes contenant toutes les couleurs possibles d'une carte
+        /// Il suffit de simplement ajouter le nom d'une couleur à cette enum
+        /// pour que des cartes aient cette couleur
+        /// </summary>
         public enum CardColor
         {
             Red,
@@ -22,18 +30,17 @@ namespace SlamMatch
             Yellow,
         }
 
-        int roundDuration;
+        private const int roundDuration = 10;
+        
         private int numCards;
         private int numCardsValidated;
         private List<Card> cards;
-        
+        private int roundTimer;
         private Random randomizer;
-
-        //TODO: Timer to be Added here 
 
         public Round(int numCard)
         {
-            this.roundDuration = 10;
+            this.roundTimer = roundDuration;
             this.numCards = numCard;
             this.numCardsValidated = 0;
             this.cards = new List<Card>();
@@ -42,6 +49,10 @@ namespace SlamMatch
             ShuffleCards();
         }
 
+        /// <summary>
+        /// Génère un ensemble de paires de cartes aléatoirement et l'ajoute
+        /// à la collection de cartes du tour
+        /// </summary>
         private void GeneratePairsOfCards()
         {
             CardSymbol tempCardSymbol;
@@ -56,6 +67,9 @@ namespace SlamMatch
             }
         }
 
+        /// <summary>
+        /// Mélange la collection de carte du tour
+        /// </summary>
         private void ShuffleCards()
         {
             Card card;
@@ -69,29 +83,43 @@ namespace SlamMatch
             }
         }
 
+        /// <summary>
+        /// Incrémente le nombre de cartes validées pendant le tour par 2
+        /// càd une paire de cartes à été associée
+        /// </summary>
         public void PairOfCardsValidated()
         {
             this.numCardsValidated += 2;
         }
 
-        public List<Card> GetCards()
-        {
-            return this.cards;
-        }
-
+        /// <summary>
+        /// Vérifie si le tour est terminé 
+        /// (càd toutes les paires de cartes on été associées) ou pas
+        /// </summary>
+        /// <returns> true si le tour est terminé, false sinon </returns>
         public bool RoundFinished()
         {
             return this.numCardsValidated == this.numCards; 
         }
 
-        public void DecrementDuration()
+        /// <summary>
+        /// Décremente le timer du tour
+        /// </summary>
+        public void DecrementTimer()
         {
-            this.roundDuration--;
+            this.roundTimer--;
         }
 
-        public int GetDuration()
+        /// <returns> la collection de cartes du tour </returns>
+        public List<Card> GetCards()
         {
-            return this.roundDuration;
+            return this.cards;
+        }
+
+        /// <returns> Le temps restant du tour </returns>
+        public int GetTimeLeft()
+        {
+            return this.roundTimer;
         }
     }
 }
