@@ -30,7 +30,6 @@ namespace SlamMatch
         /// <returns> true si il reste au moins une vie après la décrémentation false sinon </returns>
         public bool DecrementNumLives()
         {
-            Console.WriteLine(numLives);
             return this.numLives-- > 1;
         }
 
